@@ -11,12 +11,15 @@ struct Customer {
         // priority_level is used for the MaxHeap
         int priority_level_;
     
+    // default constructor
+    Customer(): name_{"Unknown"}, service_time_{0}, priority_level_{0} {}
+    
     // constructor
     Customer( std::string name ): name_{name} {
         // set the data  members
         // call setPriorityLevel() for priority level
         priority_level_ =  setPriorityLevel();
-
+        service_time_ = setServiceTime();
     }
     // member function
     int setPriorityLevel(){   
@@ -30,16 +33,26 @@ struct Customer {
         return rand() % 61; 
     }
 
-    bool operator>=( const Customer& other){
+    int getServiceTime() const {
+        return service_time_;
+    }
+
+    int getPriorityLevel() const {
+        return priority_level_;
+    }
+
+    std::string getName() const {
+        return name_;
+    }
+
+    bool operator>=( const Customer& other) const {  /*new_item is a const Comparable& (const Customer reference), and when you call new_item >= array_[hole/2], the compiler tries to call the operator>= method on the const object, but your operator is not const-qualified.*/
         return priority_level_ >= other.priority_level_;
     }
 
-    // friend std::ostream& operator<<(std::ostream& os, const Customer& p){
-
-    //     os << "Name: " << p.name_ << " Priority Level " << p.priority_level_;
-
-    //     return os;
-    // }
+    friend std::ostream& operator<<(std::ostream& os, const Customer& p){
+        os << "Name: " << p.name_ << " Priority Level: " << p.priority_level_ << "\n";
+        return os;
+    }
 
 };
 
@@ -136,13 +149,13 @@ class MaxHeap
 
 
         ///////////////////////////////////////////////////////////////////////////
-        // void print()
-        // {
-        //     for(int i = 1; i <= current_size_; i++)
-        //     std::cout<< array_[i] << " ";
+        void print()
+        {
+            for(int i = 1; i <= current_size_; i++)
+            std::cout<< array_[i] << " ";
             
-        //     std::cout<<std::endl;
-        // }
+            std::cout<<std::endl;
+        }
 
 
     private:
