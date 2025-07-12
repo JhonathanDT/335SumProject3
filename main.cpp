@@ -4,15 +4,6 @@
 
 using namespace std;
 
-template <class Comparable>
-void deleteAll(MaxHeap<Comparable>& heap)
-{
-    int size = heap.getSize();
-    for(int i = 0; i < size; i++)
-        cout<<heap.deleteMax()<<" ";
-    cout<<endl;
-}
-
 int main(){
 
     // create customers (from the struct)
@@ -39,59 +30,31 @@ int main(){
     heap1.insert(Customer9);
     heap1.insert(Customer10);
 
-    // heap1.print();
+    heap1.print();
+
+    std::vector<Customer> servedCustomers;
 
     // for loop that deletes (serves customers)
+    while( heap1.getSize() > 0 ){
+        // delete the Max value in the heap
+        Customer servedCustomer = heap1.deleteMax();        
         // set the service time 
-
-    // add the served customers in a vector 
+        servedCustomer.setServiceTime();
+        servedCustomers.push_back( servedCustomer );
+    }
 
     // sort the vector in ascending order (based on the service time),
+    sort(servedCustomers.begin(), servedCustomers.end(), [](const Customer& a, const Customer& b) {
+        return a.getServiceTime() < b.getServiceTime();
+    });
+
+    /*Display sorted history*/
+    cout << "\n=== Customer Service History SORTED BY SERVICE TIME ===" << endl;
+    for(size_t i = 0; i < servedCustomers.size(); i++) {
+        cout << "Customer: " << servedCustomers[i].getName()
+             << " (Priority: " << servedCustomers[i].getPriorityLevel()
+             << "), Service Time: " << servedCustomers[i].getServiceTime() << " minutes." << endl;
+    }
 
     return 0;
 }
-
-
-// #include "MaxHeap.h"
-// #include<iostream>
-
-// using namespace std;
-
-// template <class Comparable>
-// void deleteAll(MaxHeap<Comparable>& heap)
-// {
-//     int size = heap.getSize();
-//     for(int i = 0; i < size; i++)
-//         cout<<heap.deleteMax()<<" ";
-//     cout<<endl;
-// }
-
-// int main()
-// {
-//     MaxHeap<int> heap1;
-//     heap1.insert(10);
-//     heap1.insert(-3);
-//     heap1.insert(17);
-//     heap1.insert(4);
-//     heap1.insert(1);
-//     heap1.insert(100);
-
-//     heap1.print();
-
-//     double arr[] = {2.718, .618, 1.618, 3.14, -1, 1.414, .707};
-//     MaxHeap<double> heap2(arr, 7);
-//     heap2.print();
-
-//     // test delete
-//     cout<<"First Delete: ";
-//     deleteAll(heap1);
-//     cout<<"Second Delete: ";
-//     deleteAll(heap1);
-
-//     cout<<"First Delete: ";
-//     deleteAll(heap2);
-//     cout<<"Second Delete: ";
-//     deleteAll(heap2);
-
-//     return 0;
-// }
